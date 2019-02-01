@@ -1,28 +1,29 @@
-//Depencies
-var express = require('express');
+var express = require("express");
 
-//Define where will  port be listening on
 var PORT = process.env.PORT || 8080;
 
 var app = express();
 
-//serve static content for the app from the public directory in the application 
-app.use(express.static(__dirname + '/public'));
+// Serve static content for the app from the "public" directory in the application directory.
+app.use(express.static("public"));
 
-//Set Handlebars
+// Parse application body as JSON
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+// Set Handlebars.
 var exphbs = require("express-handlebars");
 
-app.engine("handlebars", exphbs({
-    defaultLayout: "main"
-}));
-app.set("view engine","handlebars");
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
-//Import the route and give server acces to get through
-var routes = require("./controllers/burgers_controller.js");
+// Import routes and give the server access to them.
+var routes = require("./controllers/burgers_controller");
 
 app.use(routes);
 
-//App listeninig
-app.listen(PORT, function(){
-    console.log("App is now on Port :" + PORT);
+// Start our server so that it can begin listening to client requests.
+app.listen(PORT, function() {
+  // Log (server-side) when our server has started
+  console.log("Server listening on: http://localhost:" + PORT);
 });
